@@ -12,7 +12,7 @@ module RemoteEnvLoader
     res = http.request(req)
     remote_env = JSON.parse(res.body)
 
-    if remote_env['id'].present? && remote_env['id'] != 'unauthorized'
+    if remote_env['id'].present? && remote_env['id'] != 'unauthorized' && remote_env['id'] != 'not_found'
       ENV.update(remote_env.transform_keys(&:to_s)) do |key, old_value, new_value|
         overwrite ? new_value : old_value
       end

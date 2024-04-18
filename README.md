@@ -10,7 +10,12 @@ Installation
   gem 'remote_env_loader', git: 'https://github.com/kolosek/remote_env_loader.git', branch: 'master'
   ```
 
-  Add `require 'remote_env_loader'` to config/application.rb
+  Add to config/application.rb
+
+  ```
+  require 'remote_env_loader'
+  RemoteEnvLoader::Rails.load
+  ```
 
 Configuration
 -----------------

@@ -50,11 +50,3 @@ module RemoteEnvLoader
     config.before_configuration { load }
   end
 end
-
-
-
-
-
-
-
-

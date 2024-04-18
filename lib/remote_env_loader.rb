@@ -16,6 +16,7 @@ module RemoteEnvLoader
       ENV.update(remote_env.transform_keys(&:to_s)) do |key, old_value, new_value|
         overwrite ? new_value : old_value
       end
+      puts "Loaded #{remote_env.keys.size} env variables from #{app_name}"
     else
       puts 'Could not load environment'
     end

@@ -25,8 +25,13 @@ module RemoteEnvLoader
       )
     end
 
+    # Loads at most once per process: the app may call this before
+    # Bundler.require, and the before_configuration hook calls it again.
+    # A failed load is retried on the next call.
     def load
-      RemoteEnvLoader.load(app_name, token, overwrite: overwrite)
+      return true if @loaded
+
+      @loaded = RemoteEnvLoader.load(app_name, token, overwrite: overwrite)
     end
 
     def root

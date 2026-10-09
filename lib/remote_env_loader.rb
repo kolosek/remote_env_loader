@@ -3,8 +3,9 @@
 module RemoteEnvLoader
   extend self
 
+  # Returns true when the environment was loaded, false otherwise.
   def load(app_name, token, overwrite: false)
-    return if app_name.to_s.empty? || token.to_s.empty?
+    return false if app_name.to_s.empty? || token.to_s.empty?
 
     uri = URI("https://api.heroku.com/apps/#{app_name}/config-vars")
     http = Net::HTTP.new(uri.host, uri.port)
@@ -16,7 +17,7 @@ module RemoteEnvLoader
 
     unless res.is_a?(Net::HTTPSuccess)
       warn "RemoteEnvLoader: could not load environment from #{app_name} (#{res.code} #{res.message})"
-      return
+      return false
     end
 
     remote_env = JSON.parse(res.body)
@@ -24,8 +25,10 @@ module RemoteEnvLoader
       overwrite ? new_value : old_value
     end
     puts "Loaded #{remote_env.keys.size} env variables from #{app_name}"
+    true
   rescue StandardError => e
     warn "RemoteEnvLoader: could not load environment from #{app_name} (#{e.class}: #{e.message})"
+    false
   end
 end
 
